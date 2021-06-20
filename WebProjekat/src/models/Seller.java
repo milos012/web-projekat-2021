@@ -1,15 +1,21 @@
 package models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Seller {
+import enums.Gender;
+import enums.Role;
+
+public class Seller extends User{
 	
 	private ArrayList<Integer> manifestations;  // Manifestation IDs
 	private ArrayList<Integer> tickets;  // ticket IDs
 	
-	
-	public Seller(ArrayList<Integer> manifestations, ArrayList<Integer> tickets) {
-		super();
+
+	public Seller(String username, String password, String firstName, String lastName, Gender gender,
+			LocalDate dateOfBirth, Role role, Boolean deleted, ArrayList<Integer> manifestations,
+			ArrayList<Integer> tickets) {
+		super(username, password, firstName, lastName, gender, dateOfBirth, role, deleted);
 		this.manifestations = manifestations;
 		this.tickets = tickets;
 	}
