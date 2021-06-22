@@ -12,7 +12,7 @@ $(document).ready(function(){
         }
         if(username && password){
             $.get({
-			url: "/Web/rest/users/login",
+			url: "/WebProject/rest/users/login",
 			contentType: 'application/json',
 			data: {"username": username, "password":password},
 			success: function(user){

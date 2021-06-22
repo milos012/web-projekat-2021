@@ -37,7 +37,7 @@ $(document).ready(function(){
             
         if(!err){
             $.post({
-			url: "/Web/rest/users/register",
+			url: "/WebProject/rest/users/register",
 			contentType: 'application/json',
 			data: JSON.stringify({"username": username, "password":password, "firstName": firstName, "lastName":lastName, "gender":gender, "dateOfBirth":dateOfBirth, "role":"BUYER", "deleted": false}),
 			success: function(user){
