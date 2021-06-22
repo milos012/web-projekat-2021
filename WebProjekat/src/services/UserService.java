@@ -184,7 +184,7 @@ public class UserService {
 			try {
 				mapper.writeValue(Paths.get(path + "buyers.json").toFile(), getAllBuyers());
 			} catch (IOException e) {
-				System.out.println("Error when writing!");
+				System.out.println("Error while writing!");
 			}
 		}
 
@@ -198,9 +198,62 @@ public class UserService {
 			try {
 				mapper.writeValue(Paths.get(path + "sellers.json").toFile(), getAllSellers());
 			} catch (IOException e) {
-				System.out.println("Error when writing!");
+				System.out.println("Error while writing!");
 			}
 		}
+	}
+	
+	public User login(String username, String password) {
+		for (User u : users) {
+			if (u.getUsername() == username){
+				if(u.getPassword().equals(password) && u.getDeleted() == false) {
+					return u;
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	public User register(User u) {
+		for (User usr : users) {
+			if (usr.getUsername() == u.getUsername()){
+				return null;
+			}
+		}
+		
+
+		if (u.getRole() == Role.BUYER) {
+			Buyer buyer = new Buyer(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
+					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<String>(), 0, UserTypeName.BRONZE);
+
+			users.add(buyer);
+			allUsers.add(buyer);
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				mapper.writeValue(Paths.get(path + "buyers.json").toFile(), getAllBuyers());
+			} catch (IOException e) {
+				System.out.println("Error while writing!");
+				return null;
+			}
+			return buyer;
+		}
+		else if (u.getRole() == Role.SELLER) {
+			Seller seller = new Seller(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
+					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<>(), new ArrayList<>());
+			
+			users.add(seller);
+			allUsers.add(seller);
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				mapper.writeValue(Paths.get(path + "sellers.json").toFile(), getAllSellers());
+			} catch (IOException e) {
+				System.out.println("Error while writing!");
+				return null;
+			}
+			return seller;
+		}
+		return null;
 	}
 	
 }
