@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.nio.file.Paths;
 
@@ -21,6 +23,7 @@ public class UserService {
 	private ArrayList<User> users;
 	private String path;
 	private ArrayList<User> allUsers;
+	private Comparator<User> sorterPoints, sorterFName, sorterLName, sorterUsername;
 	
 	public Collection<User> getAllUsers() {
 		return users;
@@ -33,6 +36,8 @@ public class UserService {
 	
 	public UserService(String path) {
 		users = new ArrayList<User>();
+		allUsers = new ArrayList<User>();
+		initSorters();
 		loadUsers(path);
 	}
 
@@ -88,6 +93,26 @@ public class UserService {
 			}
 		}
 		return null;
+	}
+	
+	public Collection<User> getByFirstName(Collection<User> users, String name) {
+		ArrayList<User> filteredList = new ArrayList<User>();
+		for (User u : users) {
+			if (u.getFirstName().toLowerCase().contains(name)) {
+				filteredList.add(u);
+			}
+		}
+		return filteredList;
+	}
+
+	public Collection<User> getByLastName(Collection<User> users, String prezime) {
+		ArrayList<User> filteredList = new ArrayList<User>();
+		for (User u : users) {
+			if (u.getLastName().toLowerCase().contains(prezime)) {
+				filteredList.add(u);
+			}
+		}
+		return filteredList;
 	}
 	
 	private ArrayList<User> getAllAdmins() {
@@ -254,6 +279,80 @@ public class UserService {
 			return seller;
 		}
 		return null;
+	}
+	
+	public List<User> sortByFName(List<User> result, boolean opadajuce) {
+
+		Collections.sort(result, sorterFName);
+		if (opadajuce) {
+			Collections.reverse(result);
+		}
+		return result;
+	}
+
+	public List<User> sortByLName(List<User> result, boolean opadajuce) {
+		Collections.sort(result, sorterLName);
+		if (opadajuce) {
+			Collections.reverse(result);
+		}
+		return result;
+	}
+	
+	public List<User> sortByUsername(List<User> result, boolean opadajuce) {
+		Collections.sort(result, sorterUsername);
+		if (opadajuce) {
+			Collections.reverse(result);
+		}
+		return result;
+	}
+	
+	public List<User> sortByPoints(List<User> result, boolean opadajuce) {
+		result.removeIf(k -> k.getRole() != Role.BUYER);
+		Collections.sort(result, sorterPoints);
+		if (opadajuce) {
+			Collections.reverse(result);
+		}
+		return result;
+	}
+	
+	private void initSorters() {
+		sorterPoints = new Comparator<User>() {
+
+			@Override
+			public int compare(User o1, User o2) {
+				Buyer k1 = (Buyer) o1;
+				Buyer k2 = (Buyer) o2;
+				return Double.compare(k1.getPoints(), k2.getPoints());
+			}
+
+		};
+
+		sorterFName = new Comparator<User>() {
+
+			@Override
+			public int compare(User o1, User o2) {
+				return o1.getFirstName().toLowerCase().compareTo(o2.getFirstName().toLowerCase());
+			}
+
+		};
+
+		sorterLName = new Comparator<User>() {
+
+			@Override
+			public int compare(User o1, User o2) {
+				return o1.getLastName().toLowerCase().compareTo(o2.getLastName().toLowerCase());
+			}
+
+		};
+
+		sorterUsername = new Comparator<User>() {
+
+			@Override
+			public int compare(User o1, User o2) {
+				return o1.getUsername().toLowerCase().compareTo(o2.getUsername().toLowerCase());
+			}
+
+		};
 	}
 	
 }
