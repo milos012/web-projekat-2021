@@ -87,7 +87,7 @@ public class UserController {
 	@GET
 	@Path("/user")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User trenutni() {
+	public User activeUser() {
 		try {
 			User user = (User)request.getSession().getAttribute("user");
 			return user;
@@ -99,7 +99,7 @@ public class UserController {
 	@GET
 	@Path("/edit")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User izmena(@QueryParam("password") String password, @QueryParam("firstName") String fName, @QueryParam("lastName") String lName ) {
+	public User editUser(@QueryParam("password") String password, @QueryParam("firstName") String fName, @QueryParam("lastName") String lName ) {
 		User trenutni = (User)request.getSession().getAttribute("user");
 		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername()))) {
 			trenutni.setFirstName(fName);
@@ -114,7 +114,7 @@ public class UserController {
 	
 	@GET
 	@Path("/delete")
-	public void brisanje(@QueryParam("username") String username ) {
+	public void deleteUser(@QueryParam("username") String username ) {
 		User trenutni = (User)request.getSession().getAttribute("user");
 		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername())) && trenutni.getRole() == Role.ADMIN) {
 			getUserService().deleteUser(username);

@@ -44,7 +44,7 @@ public class CommentController {
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Boolean dodaj(Comment kom) {
+	public Boolean addComment(Comment kom) {
 		User trenutni = (User) request.getSession().getAttribute("user");
 		if(trenutni == null)
 			return false;
