@@ -17,6 +17,7 @@ import enums.Role;
 import enums.UserTypeName;
 import models.Buyer;
 import models.Seller;
+import models.Ticket;
 import models.User;
 
 public class UserService {
@@ -46,8 +47,11 @@ public class UserService {
 		path = filePath + File.separator;
 
 		List<User> admins = null;
+		List<Buyer> buyers = null;
+		
 		try {
 			admins = Arrays.asList(mapper.readValue(Paths.get(path + "admins.json").toFile(), User[].class));
+			System.out.println("Ucitavanje admina uspesno===");
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -63,25 +67,38 @@ public class UserService {
 			allUsers.add(u);
 		}
 		
+		try {
+			buyers = Arrays.asList(mapper.readValue(Paths.get(path + "buyers.json").toFile(), Buyer[].class));
+			System.out.println("Ucitavanje buyera uspesno===");
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+				e.printStackTrace();
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+		
+		for (User u : buyers) {
+			if (!u.getDeleted()) {
+				users.add(u);
+			}
+			allUsers.add(u);
+		}
+		
 		
 		try {
 			List<Seller> sellers = Arrays.asList(mapper.readValue(Paths.get(path + "sellers.json").toFile(), Seller[].class));
+			System.out.println("Ucitavanje sellera uspesno===");
 			for (Seller s : sellers) {
 				if (!s.getDeleted()) {
 					users.add(s);
 				}
 				allUsers.add(s);
 			}
-			List<Buyer> buyers = Arrays.asList(mapper.readValue(Paths.get(path + "buyers.json").toFile(), Buyer[].class));
-			for (Buyer b : buyers) {
-				if (!b.getDeleted()) {
-					users.add(b);
-				}
-				allUsers.add(b);
-			}
 		}
 		catch (Exception e) {
 			System.out.println("Error while loading");
+			System.out.println(path);
 		}
 
 	}
@@ -354,5 +371,37 @@ public class UserService {
 
 		};
 	}
+	
+	public User getManifestationSeller(String idManifestacije) {
+
+		for (User k : allUsers) {
+			if (k.getRole() == Role.SELLER) {
+				Seller prodavac = (Seller) k;
+				for (int id : prodavac.getManifestations()) {
+					if (id == Integer.parseInt(idManifestacije)) {
+						return prodavac;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public void dodajKarteKupcu(User trenutni, ArrayList<Ticket> newTickets) {
+		Buyer bu = (Buyer) trenutni;
+		for (Ticket k : newTickets)
+			bu.getTickets().add(k.getId());
+
+		modifyUser(bu);
+	}
+
+//	public void dodajKarteProdavcu(ArrayList<Ticket> noveKarte) {
+//		Seller p = (Seller) mapaKorisnika.get(noveKarte.get(0).());
+//		for (Ticket k : noveKarte)
+//			p.getTickets().add(k.getId());
+//
+//		modifyUser(p);
+//	}
+
 	
 }

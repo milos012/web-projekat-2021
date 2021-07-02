@@ -2,6 +2,7 @@ package models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import enums.Gender;
 import enums.Role;
@@ -9,12 +10,17 @@ import enums.Role;
 public class Seller extends User{
 	
 	private ArrayList<Integer> manifestations;  // Manifestation IDs
-	private ArrayList<Integer> tickets;  // ticket IDs
+	private List<Integer> tickets;  // ticket IDs
 	
+	
+	public Seller() {
+		super();
+	}
+
 
 	public Seller(String username, String password, String firstName, String lastName, Gender gender,
 			LocalDate dateOfBirth, Role role, Boolean deleted, ArrayList<Integer> manifestations,
-			ArrayList<Integer> tickets) {
+			List<Integer> tickets) {
 		super(username, password, firstName, lastName, gender, dateOfBirth, role, deleted);
 		this.manifestations = manifestations;
 		this.tickets = tickets;
@@ -31,12 +37,12 @@ public class Seller extends User{
 	}
 
 
-	public ArrayList<Integer> getTickets() {
+	public List<Integer> getTickets() {
 		return tickets;
 	}
 
 
-	public void setTickets(ArrayList<Integer> tickets) {
+	public void setTickets(List<Integer> tickets) {
 		this.tickets = tickets;
 	}
 	

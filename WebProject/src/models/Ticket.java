@@ -6,7 +6,7 @@ import enums.TicketType;
 import java.util.Date;
 
 public class Ticket {
-    private int id;
+    private String id;
     private Manifestation manifestation;
     private Date manifestationDateTime;
     private double price;
@@ -17,7 +17,7 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(int id, Manifestation manifestation, Date manifestationDateTime, double price, Buyer buyer, TicketStatus ticketStatus, TicketType ticketType) {
+    public Ticket(String id, Manifestation manifestation, Date manifestationDateTime, double price, Buyer buyer, TicketStatus ticketStatus, TicketType ticketType) {
         this.id = id;
         this.manifestation = manifestation;
         this.manifestationDateTime = manifestationDateTime;
@@ -27,11 +27,11 @@ public class Ticket {
         this.ticketType = ticketType;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

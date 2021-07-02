@@ -7,6 +7,8 @@
 		"gender": "FEMALE",
 		"dateOfBirth": "1990-04-21",
 		"role": "SELLER",
-		"deleted": false
+		"deleted": false,
+		"manifestations":[],
+		"tickets":[]
 	}
 ]
