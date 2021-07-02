@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.*;
 
 import enums.Role;
+import enums.TicketType;
 import enums.UserTypeName;
 import models.Buyer;
 import models.Seller;
@@ -70,6 +71,7 @@ public class UserService {
 		try {
 			buyers = Arrays.asList(mapper.readValue(Paths.get(path + "buyers.json").toFile(), Buyer[].class));
 			System.out.println("Ucitavanje buyera uspesno===");
+			System.out.println(path);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -403,5 +405,77 @@ public class UserService {
 //		modifyUser(p);
 //	}
 
+	public void dodajBodove(int broj, double cenaForKupac, User trenutni) {
+
+		Buyer kupac = (Buyer) trenutni;
+		int noviBodovi = broj * (int) cenaForKupac / 1000 * 133;
+		kupac.setPoints(kupac.getPoints() + noviBodovi);
+		checkAndSetTipKupca(kupac);
+	}
+
+	private void checkAndSetTipKupca(Buyer kupac) {
+		double bodovi = kupac.getPoints();
+
+		if (kupac.getUserType() == UserTypeName.GOLD)
+			return;
+		else if (kupac.getUserType() == UserTypeName.SILVER) {
+			if (bodovi > 11000) {
+				kupac.setUserType(UserTypeName.GOLD);
+				kupac.setPoints(0);
+			}
+			return;
+		} else if (kupac.getUserType() == UserTypeName.BRONZE) {
+			if (bodovi > 5000) {
+				kupac.setUserType(UserTypeName.SILVER);
+				kupac.setPoints(0);
+			}
+			return;
+		}
+		return;
+	}
+	
+	public double getCenaForKupac(User trenutni, double cenaRegKarte, int tipKarte) {
+		int koeficijent = 1;
+		//if (tipKarte == TicketType.VIP) {
+		if (tipKarte == 0) {
+			koeficijent = 4;
+		} else if (tipKarte == 2) {
+			koeficijent = 2;
+		}
+
+		float popust = 0;
+		Buyer u = (Buyer) getByUsername(trenutni.getUsername());
+		UserTypeName utn = u.getUserType();
+		if(utn == UserTypeName.SILVER) {
+			popust = 6;
+		}
+		if(utn == UserTypeName.GOLD) {
+			popust = 12;
+		}
+		double cena = koeficijent * cenaRegKarte * (100 - popust) / 100;
+
+		return cena;
+	}
+	
+	public void cancelTicket(Ticket k, User trenutni) {
+		Buyer kupac = (Buyer) trenutni;
+		double bodovi = (double) Math.round(k.getPrice() / 1000 * 133 * 4);
+		kupac.setPoints(kupac.getPoints() - bodovi);
+		if (kupac.getUserType() == UserTypeName.GOLD && kupac.getPoints() < 1) {
+			kupac.setPoints(5500);
+			kupac.setUserType(UserTypeName.SILVER);
+
+		}
+		if (kupac.getUserType() == UserTypeName.SILVER && kupac.getPoints() < 1) {
+			kupac.setPoints(1500);
+			kupac.setUserType(UserTypeName.BRONZE);;
+
+		}
+		if (kupac.getUserType() == UserTypeName.BRONZE && kupac.getPoints() < 1) {
+			kupac.setPoints(0);
+		}
+
+		modifyUser(kupac);
+	}
 	
 }

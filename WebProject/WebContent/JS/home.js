@@ -20,6 +20,7 @@ function getDateTime(datetime){
     return date.split("-")[2] + ". "+month[date.split("-")[1]] + " " + date.split("-")[0] + ". u " + time.split(":")[0] +":"+time.split(":")[1];
 }
 
+
 function postaviPolja(user){
 	$("input[name='username']").val(user.username);
 	$("input[name='password']").val(user.password);
@@ -44,4 +45,48 @@ function postaviPolja(user){
 		$("#profil-dugme2").text("My manifestations");
 		$("#profil-dugme3").text("Sold tickets");
 	}
+}
+
+function dodajRedKorisnika(korisnik){
+	if(!korisnik.deleted){
+		let tr;
+	    if(korisnik.role == "SELLER")
+	        tr = $("<tr class='td-korisnik prodavac' id='"+korisnik.username+"'></tr>");
+	    else
+	        tr = $("<tr class='td-korisnik kupac' id='"+korisnik.username+"'></tr>");
+	    let slika = $("<td><img class='slika-user' src='../images/"+korisnik.gender+".png' height='50px'></td>")
+	    let username = $("<td><p class='username'>"+korisnik.username+"</p></td>")
+	    let imePrezime =  $("<td><p class='imepre'>"+korisnik.firstName + " " + korisnik.lastName+"</p></td>")
+	    let rodjen = $("<td><p class='rodjen'>Rodjen:"+ korisnik.dateOfBirth+"</p></td>")
+	    let uloga =  $("<td><p class='uloga'>"+ korisnik.role+"</p></td>")
+	    if(korisnik.role =='BUYER' && korisnik.points)
+	    	uloga = $("<td><p class='uloga'>"+ korisnik.role+"</p><img src='../images/coin.png' height='30px'>"+ korisnik.points +"</td>")
+	    let brisi = $("<td></td>");
+	    if(korisnik.role != "ADMIN")
+	   		brisi =  $("<td><button class='brisi' onclick='brisi(\""+korisnik.username+"\")'>Obrisi</button></td>")
+	
+	    
+	    tr.append(slika);
+	    tr.append(username);
+	    tr.append(imePrezime)
+	    tr.append(rodjen);
+	    tr.append(uloga);
+	    tr.append(brisi);
+	    $("#tabela-karata").append(tr);
+	}
+}
+
+function brisi(username){
+    $.get({
+        url: "/WebProject/rest/users/delete?username=" + username,
+        contentType: "application/json",
+        success: function(){
+			$("#"+ username).remove();
+        }
+   })
+}
+
+function obrisiDivPretrage()
+{
+	$("#PretragaTabele").empty();
 }
