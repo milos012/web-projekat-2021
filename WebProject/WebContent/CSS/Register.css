@@ -17,7 +17,7 @@ body{
 }
 
 #bg-image {
-    background-image: url("../Images/bgp.jpg");
+    background-image: url("../images/bgp.jpg");
   
     filter: blur(3px);
     -webkit-filter: blur(3px);

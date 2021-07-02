@@ -1,8 +1,8 @@
 package services;
 
-import models.Manifestation;
-
 import java.util.ArrayList;
+
+import models.Manifestation;
 
 public class ManifestationService {
     private ArrayList<Manifestation> manifestations;

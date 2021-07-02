@@ -37,7 +37,7 @@ $(document).ready(function(){
             
         if(!err){
             $.post({
-			url: "/WebProject/rest/users/register",
+			url: "/WP_Tickets/rest/users/register",
 			contentType: 'application/json',
 			data: JSON.stringify({"username": username, "password":password, "firstName": firstName, "lastName":lastName, "gender":gender, "dateOfBirth":dateOfBirth, "role":"BUYER", "deleted": false}),
 			success: function(user){
