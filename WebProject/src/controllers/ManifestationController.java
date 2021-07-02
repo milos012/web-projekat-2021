@@ -1,15 +1,22 @@
 package controllers;
 
 import models.Manifestation;
+import models.User;
 import services.ManifestationService;
+import services.UserService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import enums.Role;
+
 import java.util.List;
 
 @Path("/manifestations")
@@ -29,6 +36,15 @@ public class ManifestationController {
         }
         return manifestationService;
     }
+    
+    private UserService getUserService() {
+        UserService userService = (UserService) httpServletRequest.getAttribute("UserService");
+        if (userService == null) {
+            userService = new UserService(httpServletRequest.getRealPath("."));
+            httpServletRequest.setAttribute("UserService", userService);
+        }
+        return userService;
+    }
 
     @GET
     @Path("/getAll")
@@ -39,5 +55,20 @@ public class ManifestationController {
         httpServletRequest.getSession().setAttribute("manifestations", manifestations);
         return manifestations;
     }
+    
+    @POST
+	@Path("/addManifestation")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean addManifestation(Manifestation manifestation) {
+    	 User activeUser = (User) httpServletRequest.getSession().getAttribute("user");
+         if (activeUser == null) {
+             return false;
+         }
+
+         if (activeUser.equals(getUserService().getByUsername(activeUser.getUsername())) && activeUser.getRole() == Role.SELLER) {
+				return getManifestationService().addManifestation(manifestation);
+		}
+		return false;
+	}
 
 }

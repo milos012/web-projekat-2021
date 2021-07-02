@@ -2,13 +2,21 @@ package models;
 
 import enums.ManifestationType;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import services.LocalDateTimeDeserializer;
+import services.LocalDateTimeSerializer;
 
 public class Manifestation {
     private String name;
     private ManifestationType manifestationType;
     private int capacity;
-    private Date manifestationDateTime;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime manifestationDateTime;
     private double priceOfRegularTicket;
     private boolean isActive;
     private Location location;
@@ -17,7 +25,7 @@ public class Manifestation {
     public Manifestation() {
     }
 
-    public Manifestation(String name, ManifestationType manifestationType, int capacity,  Date manifestationDateTime, double priceOfRegularTicket, boolean isActive, Location location, String posterPath) {
+    public Manifestation(String name, ManifestationType manifestationType, int capacity,  LocalDateTime manifestationDateTime, double priceOfRegularTicket, boolean isActive, Location location, String posterPath) {
         this.name = name;
         this.manifestationType = manifestationType;
         this.capacity = capacity;
@@ -52,11 +60,11 @@ public class Manifestation {
         this.capacity = capacity;
     }
 
-    public Date getManifestationDateTime() {
+    public LocalDateTime getManifestationDateTime() {
         return manifestationDateTime;
     }
 
-    public void setManifestationDateTime(Date manifestationDateTime) {
+    public void setManifestationDateTime(LocalDateTime manifestationDateTime) {
         this.manifestationDateTime = manifestationDateTime;
     }
 
