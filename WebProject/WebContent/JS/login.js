@@ -19,7 +19,7 @@ $(document).ready(function(){
 				if(user == null){
 					$("#error").show();
 				}else{
-					window.location.href = "../Html/Home.html";
+					window.location.href = "../HTML/home.html";
 				}
 			}
 		})

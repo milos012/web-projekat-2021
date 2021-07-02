@@ -46,8 +46,9 @@ public class UserController {
 	public User login(@QueryParam("username") String username, @QueryParam("password") String password) {
 		User user = getUserService().login(username, password);
 		
-		if(user != null)
+		if(user != null) {
 			request.getSession().setAttribute("user", user);
+		}
 		
 		return user;
 	}

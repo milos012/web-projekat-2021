@@ -230,7 +230,7 @@ public class UserService {
 	
 	public User login(String username, String password) {
 		for (User u : users) {
-			if (u.getUsername() == username){
+			if (u.getUsername().equals(username)){
 				if(u.getPassword().equals(password) && u.getDeleted() == false) {
 					return u;
 				}

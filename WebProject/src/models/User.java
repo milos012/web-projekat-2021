@@ -1,6 +1,10 @@
 package models;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import services.LocalDateSerializer;
+import services.LocalDateDeserializer;
 
 import enums.Gender;
 import enums.Role;
@@ -12,6 +16,8 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private Gender gender;
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate dateOfBirth;
 	private Role role;
 	private Boolean deleted;
@@ -27,6 +33,10 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.role = role;
 		this.deleted = deleted;
+	}
+	
+	public User() {
+		super();
 	}
 
 	public String getUsername() {
@@ -91,6 +101,11 @@ public class User {
 
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	@Override
+	public String toString() {
+		return  username + "," + password + "," + firstName + "," + lastName + "," + gender + "," + dateOfBirth + "," + role + "," + deleted;
 	}
 
 	
