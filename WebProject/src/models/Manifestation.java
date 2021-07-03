@@ -11,6 +11,7 @@ import services.LocalDateTimeDeserializer;
 import services.LocalDateTimeSerializer;
 
 public class Manifestation {
+	private int id;
     private String name;
     private ManifestationType manifestationType;
     private int capacity;
@@ -21,12 +22,14 @@ public class Manifestation {
     private boolean isActive;
     private Location location;
     private String posterPath;
+    private Boolean deleted;
 
     public Manifestation() {
     }
 
-    public Manifestation(String name, ManifestationType manifestationType, int capacity,  LocalDateTime manifestationDateTime, double priceOfRegularTicket, boolean isActive, Location location, String posterPath) {
-        this.name = name;
+    public Manifestation(int id, String name, ManifestationType manifestationType, int capacity,  LocalDateTime manifestationDateTime, double priceOfRegularTicket, boolean isActive, Location location, String posterPath, Boolean deleted) {
+        this.id = id;
+    	this.name = name;
         this.manifestationType = manifestationType;
         this.capacity = capacity;
         this.manifestationDateTime = manifestationDateTime;
@@ -34,6 +37,7 @@ public class Manifestation {
         this.isActive = isActive;
         this.location = location;
         this.posterPath = posterPath;
+        this.deleted = deleted;
     }
 
     public String getName() {
@@ -99,4 +103,20 @@ public class Manifestation {
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
     }
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

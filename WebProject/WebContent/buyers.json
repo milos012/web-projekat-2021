@@ -10,6 +10,6 @@
 		"deleted": false,
 		"tickets": [],
 		"points": 100,
-		"userTypeName": "BRONZE"
+		"userType": "BRONZE"
 	}
 ]

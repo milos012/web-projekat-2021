@@ -11,7 +11,7 @@ import enums.UserTypeName;
 public class Buyer extends User{
 	private List<String> tickets; // ticket ids
 	private double points;
-	private UserTypeName userTypeName;
+	private UserTypeName userType;
 	
 	public Buyer() {
 		super();
@@ -23,7 +23,7 @@ public class Buyer extends User{
 		super(username, password, firstName, lastName, gender, dateOfBirth, role, deleted);
 		this.tickets = tickets;
 		this.points = points;
-		this.userTypeName = userType;
+		this.userType = userType;
 	}
 	
 	public List<String> getTickets() {
@@ -39,10 +39,10 @@ public class Buyer extends User{
 		this.points = points;
 	}
 	public UserTypeName getUserType() {
-		return userTypeName;
+		return userType;
 	}
 	public void setUserType(UserTypeName userType) {
-		this.userTypeName = userType;
+		this.userType = userType;
 	}
 	
 	
